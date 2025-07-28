@@ -30,8 +30,8 @@ public interface GradeRepository extends JpaRepository<Grade, Long> {
             @Param("courseId") Long courseId
     );
     
-    @Query("SELECT AVG(g.gradeValue) FROM Grade g JOIN g.enrollment e WHERE e.student.id = :studentId AND g.isCourseCompleted = true")
-    Double calculateGPA(@Param("studentId") Long studentId);
+//    @Query("SELECT AVG(g.gradeValue) FROM Grade g JOIN g.enrollment e WHERE e.student.id = :studentId AND g.isCourseCompleted = true")
+//    Double calculateGPA(@Param("studentId") Long studentId);
     
     @Query("SELECT g FROM Grade g JOIN FETCH g.enrollment e JOIN FETCH e.course c WHERE e.student.id = :studentId")
     List<Grade> findGradesWithCourseByStudentId(@Param("studentId") Long studentId);
