@@ -11,6 +11,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.jpa.repository.EntityGraph;
+
 @Repository
 public interface StudentRepository extends JpaRepository<Student, Long> {
     
@@ -26,4 +28,8 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     Page<Student> search(@Param("query") String query, Pageable pageable);
 
     boolean existsByEmail(String email);
+    
+    @EntityGraph(attributePaths = {"enrollments", "enrollments.course", "enrollments.grade"})
+    @Query("SELECT s FROM Student s LEFT JOIN FETCH s.enrollments e LEFT JOIN FETCH e.course LEFT JOIN FETCH e.grade WHERE s.id = :studentId")
+    Optional<Student> findByIdWithEnrollmentsAndGrades(@Param("studentId") Long studentId);
 }

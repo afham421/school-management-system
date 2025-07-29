@@ -1,10 +1,12 @@
 package com.example.school.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -32,6 +34,7 @@ public class Grade {
     
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "enrollment_id", nullable = false, unique = true)
+    @JsonBackReference("grade-enrollment")
     private Enrollment enrollment;
     
     @Column(name = "graded_date")
@@ -80,6 +83,14 @@ public class Grade {
         this.gradedDate = LocalDate.now();
         if (this.enrollment != null) {
             this.enrollment.setStatus(Enrollment.EnrollmentStatus.COMPLETED);
+        }
+    }
+    
+    // Unmark the course as completed
+    public void unmarkAsCompleted() {
+        this.isCourseCompleted = false;
+        if (this.enrollment != null) {
+            this.enrollment.setStatus(Enrollment.EnrollmentStatus.ACTIVE);
         }
     }
 }

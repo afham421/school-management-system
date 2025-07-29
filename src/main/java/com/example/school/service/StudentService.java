@@ -1,7 +1,9 @@
 package com.example.school.service;
 
 import com.example.school.dto.StudentDTO;
+import com.example.school.dto.StudentProgressDTO;
 import com.example.school.entity.Student;
+import com.example.school.exception.ResourceNotFoundException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
@@ -17,19 +19,10 @@ public interface StudentService {
     
     Student findStudentByEmail(String email);
     
-    /**
-     * Search for students by name or email with pagination
-     * @param query Search term to look for in student names or emails
-     * @param pageable Pagination information
-     * @return Page of students matching the search criteria
-     */
+
     Page<Student> searchStudents(String query, Pageable pageable);
     
-    /**
-     * Search for students by name or email (non-paginated)
-     * @param query Search term to look for in student names or emails
-     * @return List of students matching the search criteria
-     */
+
     List<Student> searchStudents(String query);
     
     Student createStudent(StudentDTO studentDTO);
@@ -41,4 +34,6 @@ public interface StudentService {
     boolean existsByEmail(String email);
     
     boolean existsById(Long id);
+
+    StudentProgressDTO getStudentProgress(Long studentId) throws ResourceNotFoundException;
 }
